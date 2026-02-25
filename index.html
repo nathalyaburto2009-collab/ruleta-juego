@@ -7,28 +7,47 @@
 
 <style>
 body{
+    margin:0;
     font-family: Arial;
     text-align:center;
-    margin:0;
-    background:linear-gradient(#0b3d2e,#000);
     color:white;
+    background: linear-gradient(#002b5c, #000);
 }
 
+/* bandera animada */
 .bandera{
-    width:100%;
-    height:8px;
-    background:linear-gradient(#0067c6 33%, white 33% 66%, #0067c6 66%);
-    animation: onda 3s infinite linear;
+    height:10px;
+    background: linear-gradient(#0067c6 33%, white 33% 66%, #0067c6 66%);
+    animation: mover 4s linear infinite;
+}
+@keyframes mover{
+    0%{background-position:0;}
+    100%{background-position:200px;}
 }
 
-@keyframes onda{
-  0%{background-position:0 0;}
-  100%{background-position:200px 0;}
+h1{
+    margin-top:10px;
 }
 
+.contenedor{
+    background: rgba(0,0,0,0.4);
+    margin:15px;
+    padding:15px;
+    border-radius:15px;
+}
+
+/* imagen */
+.sandino-img{
+    width:180px;
+    border-radius:10px;
+    border:4px solid white;
+    box-shadow:0 0 15px rgba(255,255,255,0.6);
+}
+
+/* ruleta */
 #ruleta{
-    width:240px;
-    height:240px;
+    width:230px;
+    height:230px;
     border-radius:50%;
     border:8px solid white;
     margin:20px auto;
@@ -41,29 +60,20 @@ body{
     transition: transform 3s ease-out;
 }
 
+/* botones */
 button{
     padding:12px 25px;
     font-size:18px;
     border:none;
     border-radius:10px;
     background:#ffd700;
-    cursor:pointer;
     margin:5px;
+    cursor:pointer;
 }
 
 #puntos{
     font-size:22px;
     margin-top:10px;
-}
-
-img{
-    width:170px;
-    border-radius:10px;
-    border:3px solid white;
-}
-
-@media (max-width:600px){
-  #ruleta{ width:200px; height:200px; }
 }
 </style>
 </head>
@@ -71,26 +81,26 @@ img{
 
 <div class="bandera"></div>
 
+<div class="contenedor">
+
 <h1>🎯 Ruleta de Sandino</h1>
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Augusto_Cesar_Sandino.jpg/640px-Augusto_Cesar_Sandino.jpg">
+<!-- Imagen visible -->
+<img class="sandino-img"
+src="https://upload.wikimedia.org/wikipedia/commons/2/2b/Augusto_Cesar_Sandino.jpg">
 
 <div id="ruleta"></div>
 
 <button onclick="girar()">🎡 Girar</button>
-<button onclick="pantallaCompleta()">📱 Pantalla Completa</button>
 <button onclick="toggleMusica()">🎵 Música</button>
 
 <div id="puntos">Puntos: 0</div>
 
-<!-- Música sandinista -->
-<audio id="musica" loop>
-  <source src="https://archive.org/download/ElPuebloUnidoJamasSeraVencido_201902/El%20pueblo%20unido%20jam%C3%A1s%20ser%C3%A1%20vencido.mp3" type="audio/mpeg">
-</audio>
+</div>
 
-<!-- sonido de ruleta -->
-<audio id="spinSound">
-  <source src="https://assets.mixkit.co/active_storage/sfx/2001/2001-preview.mp3">
+<!-- música -->
+<audio id="musica">
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
 </audio>
 
 <script>
@@ -99,46 +109,29 @@ const preguntas = [
  {p:"¿Contra qué país luchó Sandino?", r:"estados unidos"},
  {p:"¿En qué año fue asesinado?", r:"1934"},
  {p:"¿Cómo se llamaba su ejército?", r:"defensor"},
- {p:"¿En qué departamento nació?", r:"masaya"},
- {p:"¿Sandino es héroe nacional? (si/no)", r:"si"},
- {p:"¿Su lucha defendía la soberanía nacional? (si/no)", r:"si"},
- {p:"¿El sombrero de Sandino era su símbolo? (si/no)", r:"si"}
+ {p:"¿Sandino defendía la soberanía nacional? (si/no)", r:"si"}
 ];
 
 let puntos = 0;
 const musica = document.getElementById("musica");
-const spinSound = document.getElementById("spinSound");
-
-function hablar(texto){
-    const voz = new SpeechSynthesisUtterance(texto);
-    voz.lang = "es-ES";
-    speechSynthesis.speak(voz);
-}
 
 function girar(){
-    musica.play();
-    spinSound.play();
-
     const ruleta = document.getElementById("ruleta");
     const grados = Math.floor(Math.random()*360)+720;
     ruleta.style.transform = "rotate("+grados+"deg)";
 
     setTimeout(()=>{
         const pregunta = preguntas[Math.floor(Math.random()*preguntas.length)];
-        hablar(pregunta.p);
         const resp = prompt(pregunta.p);
 
         if(resp && resp.toLowerCase().includes(pregunta.r)){
             puntos += 10;
-            hablar("Correcto");
             alert("✅ Correcto +10 puntos");
         } else {
-            hablar("Incorrecto");
             alert("❌ Incorrecto");
         }
 
         document.getElementById("puntos").innerHTML = "Puntos: " + puntos;
-
     },3000);
 }
 
@@ -148,10 +141,6 @@ function toggleMusica(){
     } else {
         musica.pause();
     }
-}
-
-function pantallaCompleta(){
-    document.documentElement.requestFullscreen();
 }
 </script>
 

@@ -12,9 +12,7 @@ body{
     color:white;
 }
 
-h1{
-    margin-top:20px;
-}
+h1{ margin-top:20px; }
 
 .ruleta{
     margin:20px auto;
@@ -35,8 +33,8 @@ h1{
     justify-content:center;
     font-size:22px;
     font-weight:bold;
+    transition: transform 2s;
 }
-
 button{
     padding:15px 30px;
     font-size:18px;
@@ -45,10 +43,9 @@ button{
     border-radius:10px;
     cursor:pointer;
 }
-
 img{
     margin-top:20px;
-    width:200px;
+    width:220px;
     border-radius:10px;
     border:3px solid gold;
 }
@@ -68,9 +65,14 @@ img{
 
 <img id="imagen" src="" style="display:none">
 
-<!-- Música sandinista automática -->
-<audio autoplay loop>
+<!-- música sandinista automática -->
+<audio id="musica" loop autoplay>
   <source src="https://archive.org/download/NicaraguaNicaraguita/NicaraguaNicaraguita.mp3" type="audio/mpeg">
+</audio>
+
+<!-- sonido ruleta -->
+<audio id="sonido">
+  <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3">
 </audio>
 
 <script>
@@ -79,46 +81,49 @@ var puntos = 0;
 
 var preguntas = [
 {
-pregunta:"¿En qué año nació Augusto C. Sandino?",
+pregunta:"¿En qué año nació Sandino?",
 respuesta:"1895",
-imagen:"https://upload.wikimedia.org/wikipedia/commons/4/4e/Augusto_Cesar_Sandino.jpg"
+imagen:"https://i.imgur.com/0y0y0y0.jpg"
 },
 {
 pregunta:"¿Contra qué país luchó Sandino?",
 respuesta:"Estados Unidos",
-imagen:"https://upload.wikimedia.org/wikipedia/commons/1/10/Sandino_con_su_ejercito.jpg"
+imagen:"https://i.imgur.com/tKQEsHU.jpg"
 },
 {
 pregunta:"¿Cómo se llamaba su ejército?",
 respuesta:"Ejército Defensor de la Soberanía Nacional",
-imagen:"https://upload.wikimedia.org/wikipedia/commons/5/5e/Sandino_tropas.jpg"
-},
-{
-pregunta:"¿En qué país se encuentra Nicaragua?",
-respuesta:"Centroamérica",
-imagen:"https://upload.wikimedia.org/wikipedia/commons/e/e6/Flag_of_Nicaragua.svg"
+imagen:"https://i.imgur.com/V6XK9QY.jpg"
 },
 {
 pregunta:"¿Qué defendía Sandino?",
 respuesta:"La soberanía nacional",
-imagen:"https://upload.wikimedia.org/wikipedia/commons/8/8e/Sandino_1932.jpg"
+imagen:"https://i.imgur.com/fx9QF3K.jpg"
 },
 {
 pregunta:"¿Cómo es conocido Sandino en Nicaragua?",
 respuesta:"Héroe Nacional",
-imagen:"https://upload.wikimedia.org/wikipedia/commons/0/05/Sandino_monumento.jpg"
+imagen:"https://i.imgur.com/JlYqP7N.jpg"
 }
 ];
 
 function girar(){
 
-var seleccion = Math.floor(Math.random()*preguntas.length);
+// sonido ruleta
+document.getElementById("sonido").play();
 
-document.getElementById("ruleta").innerHTML="🎯";
+// animación giro
+document.getElementById("ruleta").style.transform =
+"rotate(" + (Math.random()*720) + "deg)";
+
+setTimeout(function(){
+
+var seleccion = Math.floor(Math.random()*preguntas.length);
 
 var respuesta = prompt(preguntas[seleccion].pregunta);
 
-if(respuesta != null && respuesta.toLowerCase().includes(preguntas[seleccion].respuesta.toLowerCase())){
+if(respuesta != null &&
+respuesta.toLowerCase().includes(preguntas[seleccion].respuesta.toLowerCase())){
     puntos += 10;
     alert("✅ Correcto! +10 puntos");
 }else{
@@ -131,6 +136,8 @@ document.getElementById("puntos").innerHTML = "Puntos: " + puntos;
 var img = document.getElementById("imagen");
 img.src = preguntas[seleccion].imagen;
 img.style.display="block";
+
+},2000);
 
 }
 

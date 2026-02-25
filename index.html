@@ -2,134 +2,138 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ruleta Sandino</title>
+<title>Ruleta de Sandino</title>
 
 <style>
 body{
-    margin:0;
-    font-family: Arial;
     text-align:center;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(black, red);
     color:white;
-    background: linear-gradient(#002b5c, #000);
 }
 
-/* bandera */
-.bandera{
-    height:12px;
-    background: linear-gradient(#0067c6 33%, white 33% 66%, #0067c6 66%);
+h1{
+    margin-top:20px;
 }
 
-/* contenedor */
-.contenedor{
-    background: rgba(0,0,0,0.5);
-    margin:15px;
-    padding:20px;
-    border-radius:15px;
-}
-
-/* imagen */
-.sandino-img{
-    width:190px;
-    border-radius:12px;
-    border:4px solid white;
-    box-shadow:0 0 15px rgba(255,255,255,0.7);
-    margin-bottom:10px;
-}
-
-/* ruleta */
-#ruleta{
-    width:240px;
-    height:240px;
-    border-radius:50%;
-    border:8px solid white;
+.ruleta{
     margin:20px auto;
+    width:300px;
+    height:300px;
+    border-radius:50%;
+    border:8px solid gold;
     background: conic-gradient(
-        #ffd700 0% 25%,
-        #ff5733 25% 50%,
-        #33c1ff 50% 75%,
-        #7dff33 75% 100%
+        red 0deg 60deg,
+        black 60deg 120deg,
+        red 120deg 180deg,
+        black 180deg 240deg,
+        red 240deg 300deg,
+        black 300deg 360deg
     );
-    transition: transform 3s ease-out;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:22px;
+    font-weight:bold;
 }
 
-/* botón */
 button{
-    padding:14px 30px;
-    font-size:20px;
+    padding:15px 30px;
+    font-size:18px;
+    background:gold;
     border:none;
     border-radius:10px;
-    background:#ffd700;
     cursor:pointer;
 }
 
-#puntos{
-    font-size:24px;
-    margin-top:10px;
+img{
+    margin-top:20px;
+    width:200px;
+    border-radius:10px;
+    border:3px solid gold;
 }
 </style>
 </head>
+
 <body>
 
-<div class="bandera"></div>
+<h1>🎡 Ruleta de Augusto C. Sandino</h1>
 
-<div class="contenedor">
+<div class="ruleta" id="ruleta">🎯</div>
 
-<h1>🇳🇮 Ruleta de Sandino 🇳🇮</h1>
+<button onclick="girar()">Girar</button>
 
-<!-- IMAGEN QUE SÍ FUNCIONA -->
-<img class="sandino-img"
-src="https://upload.wikimedia.org/wikipedia/commons/2/2b/Augusto_Cesar_Sandino.jpg">
+<h2 id="pregunta"></h2>
+<p id="puntos"></p>
 
-<div id="ruleta"></div>
+<img id="imagen" src="" style="display:none">
 
-<button onclick="girar()">🎡 GIRAR</button>
-
-<div id="puntos">Puntos: 0</div>
-
-</div>
-
-<!-- Música sandinista -->
-<audio id="musica">
-  <source src="https://archive.org/download/CarlosMejiaGodoyNicaraguaNicaraguita/Carlos%20Mej%C3%ADa%20Godoy%20-%20Nicaragua%20Nicarag%C3%BCita.mp3" type="audio/mpeg">
+<!-- Música sandinista automática -->
+<audio autoplay loop>
+  <source src="https://archive.org/download/NicaraguaNicaraguita/NicaraguaNicaraguita.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-const preguntas = [
- {p:"¿En qué país nació Sandino?", r:"nicaragua"},
- {p:"¿Contra qué país luchó Sandino?", r:"estados unidos"},
- {p:"¿En qué año fue asesinado?", r:"1934"},
- {p:"¿Cómo se llamaba su ejército?", r:"defensor"},
- {p:"¿Sandino defendía la soberanía nacional? (si/no)", r:"si"},
- {p:"¿Sandino es héroe nacional? (si/no)", r:"si"}
-];
 
-let puntos = 0;
-const musica = document.getElementById("musica");
+var puntos = 0;
+
+var preguntas = [
+{
+pregunta:"¿En qué año nació Augusto C. Sandino?",
+respuesta:"1895",
+imagen:"https://upload.wikimedia.org/wikipedia/commons/4/4e/Augusto_Cesar_Sandino.jpg"
+},
+{
+pregunta:"¿Contra qué país luchó Sandino?",
+respuesta:"Estados Unidos",
+imagen:"https://upload.wikimedia.org/wikipedia/commons/1/10/Sandino_con_su_ejercito.jpg"
+},
+{
+pregunta:"¿Cómo se llamaba su ejército?",
+respuesta:"Ejército Defensor de la Soberanía Nacional",
+imagen:"https://upload.wikimedia.org/wikipedia/commons/5/5e/Sandino_tropas.jpg"
+},
+{
+pregunta:"¿En qué país se encuentra Nicaragua?",
+respuesta:"Centroamérica",
+imagen:"https://upload.wikimedia.org/wikipedia/commons/e/e6/Flag_of_Nicaragua.svg"
+},
+{
+pregunta:"¿Qué defendía Sandino?",
+respuesta:"La soberanía nacional",
+imagen:"https://upload.wikimedia.org/wikipedia/commons/8/8e/Sandino_1932.jpg"
+},
+{
+pregunta:"¿Cómo es conocido Sandino en Nicaragua?",
+respuesta:"Héroe Nacional",
+imagen:"https://upload.wikimedia.org/wikipedia/commons/0/05/Sandino_monumento.jpg"
+}
+];
 
 function girar(){
 
-    // activa música
-    musica.play();
+var seleccion = Math.floor(Math.random()*preguntas.length);
 
-    const ruleta = document.getElementById("ruleta");
-    const grados = Math.floor(Math.random()*360)+720;
-    ruleta.style.transform = "rotate("+grados+"deg)";
+document.getElementById("ruleta").innerHTML="🎯";
 
-    setTimeout(()=>{
-        const pregunta = preguntas[Math.floor(Math.random()*preguntas.length)];
-        const resp = prompt(pregunta.p);
+var respuesta = prompt(preguntas[seleccion].pregunta);
 
-        if(resp && resp.toLowerCase().includes(pregunta.r)){
-            puntos += 10;
-            alert("✅ Correcto +10 puntos");
-        } else {
-            alert("❌ Incorrecto");
-        }
-
-        document.getElementById("puntos").innerHTML = "Puntos: " + puntos;
-    },3000);
+if(respuesta != null && respuesta.toLowerCase().includes(preguntas[seleccion].respuesta.toLowerCase())){
+    puntos += 10;
+    alert("✅ Correcto! +10 puntos");
+}else{
+    alert("❌ Incorrecto\nRespuesta: " + preguntas[seleccion].respuesta);
 }
+
+document.getElementById("pregunta").innerHTML = preguntas[seleccion].pregunta;
+document.getElementById("puntos").innerHTML = "Puntos: " + puntos;
+
+var img = document.getElementById("imagen");
+img.src = preguntas[seleccion].imagen;
+img.style.display="block";
+
+}
+
 </script>
 
 </body>

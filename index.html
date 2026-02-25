@@ -1,3 +1,60 @@
-index.html
-estilos.css
-script.js
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Ruleta de Preguntas</title>
+<style>
+body{
+    font-family: Arial;
+    text-align:center;
+    background:#f2f2f2;
+}
+button{
+    padding:12px 20px;
+    font-size:18px;
+    background:#4CAF50;
+    color:white;
+    border:none;
+    border-radius:8px;
+}
+#pregunta{
+    font-size:22px;
+    margin:20px;
+}
+</style>
+</head>
+<body>
+
+<h1>🎯 Ruleta de Preguntas</h1>
+
+<button onclick="girar()">Girar Ruleta</button>
+
+<div id="pregunta"></div>
+
+<script>
+const preguntas = [
+    {texto:"¿Capital de Francia?", respuesta:"paris"},
+    {texto:"¿5 + 3?", respuesta:"8"},
+    {texto:"Color del cielo?", respuesta:"azul"}
+];
+
+let puntos = 0;
+
+function girar(){
+    const p = preguntas[Math.floor(Math.random()*preguntas.length)];
+    const resp = prompt(p.texto);
+
+    if(resp && resp.toLowerCase() === p.respuesta){
+        puntos += 10;
+        alert("✅ Correcto! +10 puntos");
+    } else {
+        alert("❌ Incorrecto");
+    }
+
+    document.getElementById("pregunta").innerHTML =
+        "Puntos: " + puntos;
+}
+</script>
+
+</body>
+</html>

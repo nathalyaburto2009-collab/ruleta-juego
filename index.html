@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Ruleta Sandino</title>
+
 <style>
 body{
     font-family: Arial;
@@ -10,9 +11,10 @@ body{
     background:#0b3d2e;
     color:white;
 }
+
 #ruleta{
-    width:220px;
-    height:220px;
+    width:230px;
+    height:230px;
     border-radius:50%;
     border:8px solid white;
     margin:20px auto;
@@ -24,6 +26,7 @@ body{
     );
     transition: transform 2s ease-out;
 }
+
 button{
     padding:12px 25px;
     font-size:18px;
@@ -32,9 +35,17 @@ button{
     background:#ffd700;
     cursor:pointer;
 }
+
 #puntos{
     font-size:22px;
     margin-top:15px;
+}
+
+img{
+    width:180px;
+    margin-top:15px;
+    border-radius:10px;
+    border:3px solid white;
 }
 </style>
 </head>
@@ -42,15 +53,17 @@ button{
 
 <h1>🎯 Ruleta de Sandino</h1>
 
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Augusto_Cesar_Sandino.jpg/640px-Augusto_Cesar_Sandino.jpg">
+
 <div id="ruleta"></div>
 
 <button onclick="girar()">Girar</button>
 
 <div id="puntos">Puntos: 0</div>
 
-<!-- Música instrumental nicaragüense -->
+<!-- Música Sandinista -->
 <audio id="musica" loop>
-  <source src="https://www2.cs.uic.edu/~i101/SoundFiles/StarWars60.wav" type="audio/wav">
+  <source src="https://archive.org/download/ElPuebloUnidoJamasSeraVencido_201902/El%20pueblo%20unido%20jam%C3%A1s%20ser%C3%A1%20vencido.mp3" type="audio/mpeg">
 </audio>
 
 <script>
@@ -58,8 +71,8 @@ const preguntas = [
  {p:"¿En qué país nació Sandino?", r:"nicaragua"},
  {p:"¿Contra qué país luchó Sandino?", r:"estados unidos"},
  {p:"¿En qué año fue asesinado Sandino?", r:"1934"},
- {p:"¿Cómo se llama el movimiento que lideró?", r:"ejercito defensor"},
- {p:"¿Sandino es considerado héroe nacional? (si/no)", r:"si"}
+ {p:"¿Cómo se llamaba su ejército?", r:"defensor"},
+ {p:"¿Sandino es héroe nacional? (si/no)", r:"si"}
 ];
 
 let puntos = 0;
